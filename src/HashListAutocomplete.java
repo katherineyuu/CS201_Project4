@@ -37,12 +37,11 @@ public class HashListAutocomplete implements Autocompletor {
         myMap = new HashMap<>();
         for (int i = 0; i < terms.length; i++) {
             String t = terms[i];
-            mySize += BYTES_PER_CHAR*t.length();
             int max = Math.min(t.length(), MAX_PREFIX);
             for (int j = 0; j <= max; j++) {
                 String prefix = t.substring(0, j);
                 Term newTerm = new Term(t, weights[i]);
-                mySize += BYTES_PER_CHAR*prefix.length() + BYTES_PER_DOUBLE*weights[i];
+                mySize += BYTES_PER_CHAR*t.length() + BYTES_PER_DOUBLE*weights[i];
 
                 myMap.putIfAbsent(prefix, new ArrayList<Term>());
                 myMap.get(prefix).add(newTerm);
