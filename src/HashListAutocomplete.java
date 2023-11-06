@@ -34,6 +34,7 @@ public class HashListAutocomplete implements Autocompletor {
 
     @Override
     public void initialize(String[] terms, double[] weights) {
+        myMap = new HashMap<>();
         for (int i = 0; i < terms.length; i++) {
             String t = terms[i];
             mySize += BYTES_PER_CHAR*t.length();
