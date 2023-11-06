@@ -47,7 +47,7 @@ public class HashListAutocomplete implements Autocompletor {
             }
         }
 
-        for (String k: myMap.getKeySet()) {
+        for (String k: myMap.keySet()) {
             List<Term> list = myMap.get(k);
             Collections.sort(list, Comparator.comparing(Term::getWeight).reversed());
         }
