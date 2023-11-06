@@ -108,15 +108,62 @@ public class BinarySearchAutocomplete implements Autocompletor {
 		int first = firstIndexOf(myTerms, dummy, comp);
 		int last = lastIndexOf(myTerms, dummy, comp);
 
-		if (first == -1) {               // prefix not found
+		if (first == -1 || k == 0) {               // prefix not found
 			return new ArrayList<>();
 		}
-
-		// write code here for assignment
-
-		return null;
+		if (k < 0) {
+			throw new IllegalArgumentException("Illegal value of k:"+k);
+		}
+		PriorityQueue<Term> pq = 
+				new PriorityQueue<>(Comparator.comparing(Term::getWeight));
+		for (int i = first; i < last+1; i++) {
+			Term currentTerm = myTerms[i];
+			if (!currentTerm.getWord().startsWith(prefix)) {
+				continue; // don't process if doesn't begin with prefix
+			}
+			
+			if (pq.size() < k) {
+				pq.add(currentTerm);
+			} else if (pq.peek().getWeight() < currentTerm.getWeight()) {
+				pq.remove();
+				pq.add(currentTerm);
+			}
+		}
+		int numResults = Math.min(k, pq.size());
+		LinkedList<Term> ret = new LinkedList<>();
+		for (int i = 0; i < numResults; i++) {
+			ret.addFirst(pq.remove());
+		}
+		return ret;
 	
 	}
+	/* 	// maintain pq of size k
+		PriorityQueue<Term> pq = 
+				new PriorityQueue<>(Comparator.comparing(Term::getWeight));
+		for (Term t : myTerms) {
+			if (!t.getWord().startsWith(prefix)) {
+				continue; // don't process if doesn't begin with prefix
+			}
+			
+			if (pq.size() < k) {
+				pq.add(t);
+			} else if (pq.peek().getWeight() < t.getWeight()) {
+				pq.remove();
+				pq.add(t);
+			}
+			
+		}
+		// after loop, pq holds *at most* k Terms and
+		// these are terms that are the "heaviest" based on code above
+		// since pq is a min-pq, lightest/least-heavy is first to be removed
+
+		int numResults = Math.min(k, pq.size());
+		LinkedList<Term> ret = new LinkedList<>();
+		for (int i = 0; i < numResults; i++) {
+			ret.addFirst(pq.remove());
+		}
+		return ret;
+		*/
 
 	@Override
 	public void initialize(String[] terms, double[] weights) {

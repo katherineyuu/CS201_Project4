@@ -82,6 +82,7 @@ public class BinaryBenchmark {
         }
         return -1;
 	}
+    
 	public void results() {
 		String target = "apple";
 		CountedComparator<String> comp = new CountedComparator<>();
