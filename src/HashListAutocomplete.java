@@ -38,7 +38,8 @@ public class HashListAutocomplete implements Autocompletor {
         for (int i = 0; i < terms.length; i++) {
             String t = terms[i];
             mySize += BYTES_PER_CHAR*t.length();
-            for (int j = 0; j <= MAX_PREFIX; j++) {
+            int max = Math.min(t.length(), MAX_PREFIX);
+            for (int j = 0; j <= max; j++) {
                 String prefix = t.substring(0, j);
                 Term newTerm = new Term(prefix, weights[i]);
                 mySize += BYTES_PER_CHAR*prefix.length() + BYTES_PER_DOUBLE*weights[i];
